@@ -37,7 +37,29 @@ class App extends Component {
     this.setState({ artists: tempArtists });
   };
 
-  addSong = async () => {};
+  addSong = async (event) => {
+    event.preventDefault();
+
+    const artistId = event.target.artistId.value;
+    const songUrl = `${this.apiUrl}/${artistId}/newsong`;
+
+    const response = await axios.post(songUrl, {
+      title: event.target.title.value
+    });
+
+    const artistRes = response.data.artist;
+    const tempArtists = this.state.artists;
+
+    const newArtists = tempArtists.map(artist => {
+      if(artist.id == artistRes.id) {
+        return artistRes;
+      } else {
+        return artist;
+      }
+    });
+
+    this.setState({ artists: newArtists });
+  };
 
   render() {
     return (
@@ -58,7 +80,14 @@ class App extends Component {
             />} 
           />
 
-          <Route path="/artists/:id" component={ArtistDetail} />
+          <Route
+            path="/artists/:id" 
+            component={(routerProps) => <ArtistDetail 
+              {...routerProps}
+              artists={this.state.artists}
+              addSong={this.addSong}
+            />} 
+          />
         </Switch>
       </div>
     );
