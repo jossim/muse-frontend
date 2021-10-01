@@ -10,7 +10,8 @@ class App extends Component {
   constructor() {
     super();
 
-    this.apiUrl = "http://localhost:3000/api/artists";
+    // this.apiUrl = "http://localhost:3000/api/artists";
+    this.apiUrl = "https://muse-app-backend-demo.herokuapp.com/api/artists";
 
     this.state = {
       artists: [],
